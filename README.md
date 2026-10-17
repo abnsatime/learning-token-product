@@ -4,6 +4,13 @@ LRN Portal is a production-shaped ERC-20 reference application built for learnin
 
 The repository intentionally avoids an application server and database in its first version. Reads go through a Sepolia RPC endpoint, signed writes go from the user's wallet to the token contract, and transfer history is reconstructed from onchain events.
 
+## Live Sepolia deployment
+
+- Contract: [`0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f`](https://sepolia.etherscan.io/address/0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f)
+- Deployment transaction: [`0x9cc399…69ca11`](https://sepolia.etherscan.io/tx/0x9cc39950889d737d966b655a5a4a32b5d32a471d16cc1c693faf532eaa69ca11)
+- Source verification: Sourcify `exact_match`
+- Deployment metadata: [`deployments/sepolia.json`](deployments/sepolia.json)
+
 ## Repository layout
 
 ```text
@@ -37,12 +44,15 @@ source contracts/.env
 
 forge script contracts/script/DeployLRNToken.s.sol:DeployLRNToken \
   --rpc-url "$SEPOLIA_RPC_URL" \
-  --account "$FOUNDRY_ACCOUNT" \
+  --sender "$TOKEN_INITIAL_HOLDER" \
+  --gas-estimate-multiplier 1500 \
+  --browser \
   --broadcast \
-  --verify
+  --verify \
+  --verifier sourcify
 ```
 
-Never commit private keys, keystore passwords, API keys, or populated `.env` files.
+The explicit gas multiplier is retained because the current Sepolia execution cost for this deployment is materially higher than Foundry's local estimate. Re-check this value when tooling or network rules change. Never commit private keys, keystore passwords, API keys, or populated `.env` files.
 
 ## Current scope
 

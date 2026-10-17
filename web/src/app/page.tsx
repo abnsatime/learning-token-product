@@ -1,5 +1,5 @@
 import { TokenDashboard } from "@/components/token-dashboard";
-import { explorerContractUrl } from "@/lib/contracts";
+import { explorerContractUrl, sourcifyContractUrl } from "@/lib/contracts";
 
 const architecture = [
   { number: "01", title: "Interface", detail: "Next.js · wagmi" },
@@ -47,7 +47,7 @@ export default function Home() {
             <span>L</span>
             <small>LRN</small>
           </div>
-          <div className="chain-tag tag-a">0x3fBb…3FD4</div>
+          <div className="chain-tag tag-a">0xA7de…BE7f</div>
           <div className="chain-tag tag-b">ERC—20</div>
           <div className="chain-tag tag-c">11155111</div>
         </div>
@@ -106,7 +106,7 @@ export default function Home() {
       <footer className="footer page-width">
         <div className="brand"><span className="brand-mark">L</span><span>LRN / PORTAL</span></div>
         <p>Built as an open, production-shaped Web3 learning project.</p>
-        <a href={explorerContractUrl} rel="noreferrer" target="_blank">Verified on Sepolia ↗</a>
+        <a href={sourcifyContractUrl} rel="noreferrer" target="_blank">Exact source match ↗</a>
       </footer>
     </main>
   );

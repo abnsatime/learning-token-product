@@ -1,6 +1,6 @@
 import { isAddress, type Address } from "viem";
 
-const referenceAddress = "0x3fBbEF670f4d6F58A257FE811d7Cad60D6135FD4";
+const referenceAddress = "0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f";
 const configuredAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS;
 
 export const tokenAddress: Address = isAddress(configuredAddress ?? "")
@@ -8,10 +8,11 @@ export const tokenAddress: Address = isAddress(configuredAddress ?? "")
   : referenceAddress;
 
 export const deploymentBlock = BigInt(
-  process.env.NEXT_PUBLIC_DEPLOYMENT_BLOCK ?? "11926143",
+  process.env.NEXT_PUBLIC_DEPLOYMENT_BLOCK ?? "11933147",
 );
 
 export const explorerContractUrl = `https://sepolia.etherscan.io/address/${tokenAddress}`;
+export const sourcifyContractUrl = `https://sourcify.dev/#/lookup/${tokenAddress}`;
 
 export const erc20Abi = [
   {
