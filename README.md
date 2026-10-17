@@ -56,9 +56,27 @@ forge script contracts/script/DeployLRNToken.s.sol:DeployLRNToken \
 
 The explicit gas multiplier is retained because the current Sepolia execution cost for this deployment is materially higher than Foundry's local estimate. Re-check this value when tooling or network rules change. Never commit private keys, keystore passwords, API keys, or populated `.env` files.
 
+### Faucet deployment
+
+The faucet is deployed after the token because its constructor permanently records the token address and fixed claim amount:
+
+```bash
+forge script contracts/script/DeployLRNFaucet.s.sol:DeployLRNFaucet \
+  --rpc-url "$SEPOLIA_RPC_URL" \
+  --sender "$TOKEN_INITIAL_HOLDER" \
+  --gas-estimate-multiplier 1500 \
+  --browser \
+  --broadcast \
+  --verify \
+  --verifier sourcify
+```
+
+After deployment, fund the faucet with an ordinary LRN transfer and set `NEXT_PUBLIC_FAUCET_ADDRESS` for the web build. The faucet cannot mint or withdraw tokens; it only distributes its existing inventory.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
+- Claim-once testnet faucet using `SafeERC20`
 - Unit and fuzz tests for project-specific configuration
 - Sepolia deployment script
 - Wallet connect, live token reads, and transfers
