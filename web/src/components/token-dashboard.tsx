@@ -9,7 +9,12 @@ import {
   useWriteContract,
 } from "wagmi";
 import { sepolia } from "wagmi/chains";
-import { erc20Abi, explorerContractUrl, tokenAddress } from "@/lib/contracts";
+import {
+  erc20Abi,
+  explorerContractUrl,
+  sourcifyContractUrl,
+  tokenAddress,
+} from "@/lib/contracts";
 import { formatTokenAmount, shortAddress } from "@/lib/format";
 import { RecentTransfers } from "./recent-transfers";
 import { WalletButton } from "./wallet-button";
@@ -102,9 +107,14 @@ export function TokenDashboard() {
             <span>{symbol.data ?? "LRN"} · ERC-20</span>
           </div>
         </div>
-        <a className="text-link" href={explorerContractUrl} rel="noreferrer" target="_blank">
-          Verified source ↗
-        </a>
+        <div className="contract-links">
+          <a className="text-link" href={sourcifyContractUrl} rel="noreferrer" target="_blank">
+            Exact source match ↗
+          </a>
+          <a className="text-link text-link-muted" href={explorerContractUrl} rel="noreferrer" target="_blank">
+            Etherscan ↗
+          </a>
+        </div>
       </div>
 
       <div className="metrics-grid">

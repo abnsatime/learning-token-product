@@ -120,6 +120,8 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
 .token-identity p { font-size: 18px; font-weight: 750; margin: 0 0 5px; }
 .token-identity span { color: #859194; font-size: 12px; }
 .text-link { color: var(--cyan); font-size: 12px; }
+.contract-links { align-items: flex-end; display: flex; flex-direction: column; gap: 8px; }
+.text-link-muted { color: #849093; }
 .metrics-grid { border-bottom: 1px solid rgba(255,255,255,.1); border-top: 1px solid rgba(255,255,255,.1); display: grid; grid-template-columns: 1fr 1fr; }
 .metric { padding: 36px 40px; }
 .metric + .metric { border-left: 1px solid rgba(255,255,255,.1); }
@@ -176,7 +178,7 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
   .page-width { width: min(100% - 28px, 1180px); }.nav { height: 76px; }.nav-links a:not(:last-child) { display: none; }
   .hero { min-height: auto; padding: 60px 0 80px; }.hero h1 { font-size: clamp(64px,23vw,94px); }.hero-art { min-height: 390px; }.orbit-one { height: 300px; width: 300px; }.orbit-two { height: 360px; width: 360px; }.hero-token { height: 210px; width: 210px; }.hero-token span { font-size: 96px; }
   .statement-band, .architecture-section { padding: 85px 0; }.console-section { padding: 90px 0; }
-  .console-topbar, .token-overview { align-items: flex-start; flex-direction: column; gap: 20px; }.metrics-grid { grid-template-columns: 1fr; }.metric + .metric { border-left: 0; border-top: 1px solid rgba(255,255,255,.1); }
+  .console-topbar, .token-overview { align-items: flex-start; flex-direction: column; gap: 20px; }.contract-links { align-items: flex-start; }.metrics-grid { grid-template-columns: 1fr; }.metric + .metric { border-left: 0; border-top: 1px solid rgba(255,255,255,.1); }
   .metric, .transfer-panel, .activity-panel, .token-overview { padding-left: 24px; padding-right: 24px; }.console-shell { border-radius: 20px; }
   .architecture-flow { grid-template-columns: 1fr; }.architecture-node + .architecture-node { border-left: 0; border-top: 1px solid rgba(7,16,19,.18); }
   .activity-row { grid-template-columns: 30px 1fr; }.activity-value { grid-column: 2; }.activity-block { display: none; }

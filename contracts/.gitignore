@@ -6,10 +6,8 @@ out/
 .logs/
 .ignore/
 
-# Ignores development broadcast logs
-!/broadcast
-/broadcast/*/31337/
-/broadcast/**/dry-run/
+# Deployment facts are tracked in ../deployments; raw broadcast payloads stay local.
+/broadcast/
 
 # Docs
 docs/
