@@ -9,8 +9,10 @@ The repository intentionally avoids an application server and database in its fi
 ## Live Sepolia deployment
 
 - Contract: [`0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f`](https://sepolia.etherscan.io/address/0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f)
+- Faucet: [`0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3`](https://sepolia.etherscan.io/address/0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3)
 - Deployment transaction: [`0x9cc399…69ca11`](https://sepolia.etherscan.io/tx/0x9cc39950889d737d966b655a5a4a32b5d32a471d16cc1c693faf532eaa69ca11)
-- Source verification: Sourcify `exact_match`
+- Faucet funding: [`10,000 LRN`](https://sepolia.etherscan.io/tx/0x26888fb7d77511e69bd6ceaddf7c2e561ffa4be0bdae20fc1c25b32db77e0a70)
+- Source verification: Sourcify `exact_match` for both contracts
 - Deployment metadata: [`deployments/sepolia.json`](deployments/sepolia.json)
 
 ## Repository layout
@@ -56,9 +58,27 @@ forge script contracts/script/DeployLRNToken.s.sol:DeployLRNToken \
 
 The explicit gas multiplier is retained because the current Sepolia execution cost for this deployment is materially higher than Foundry's local estimate. Re-check this value when tooling or network rules change. Never commit private keys, keystore passwords, API keys, or populated `.env` files.
 
+### Faucet deployment
+
+The faucet is deployed after the token because its constructor permanently records the token address and fixed claim amount:
+
+```bash
+forge script contracts/script/DeployLRNFaucet.s.sol:DeployLRNFaucet \
+  --rpc-url "$SEPOLIA_RPC_URL" \
+  --sender "$TOKEN_INITIAL_HOLDER" \
+  --gas-estimate-multiplier 1500 \
+  --browser \
+  --broadcast \
+  --verify \
+  --verifier sourcify
+```
+
+After deployment, fund the faucet with an ordinary LRN transfer and set `NEXT_PUBLIC_FAUCET_ADDRESS` for the web build. The faucet cannot mint or withdraw tokens; it only distributes its existing inventory.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
+- Claim-once testnet faucet using `SafeERC20`
 - Unit and fuzz tests for project-specific configuration
 - Sepolia deployment script
 - Wallet connect, live token reads, and transfers

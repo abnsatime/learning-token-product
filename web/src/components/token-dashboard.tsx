@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { isAddress, parseUnits } from "viem";
 import {
   useAccount,
@@ -18,6 +18,7 @@ import {
 import { formatTokenAmount, shortAddress } from "@/lib/format";
 import { RecentTransfers } from "./recent-transfers";
 import { WalletButton } from "./wallet-button";
+import { FaucetPanel } from "./faucet-panel";
 
 export function TokenDashboard() {
   const { address, chainId, isConnected } = useAccount();
@@ -39,6 +40,9 @@ export function TokenDashboard() {
 
   const write = useWriteContract();
   const receipt = useWaitForTransactionReceipt({ hash: write.data });
+  const refreshBalance = useCallback(() => {
+    void refetchBalance();
+  }, [refetchBalance]);
 
   useEffect(() => {
     if (receipt.isSuccess) {
@@ -131,6 +135,8 @@ export function TokenDashboard() {
           <small>{address ? shortAddress(address, 6) : "No signature required to connect"}</small>
         </div>
       </div>
+
+      <FaucetPanel onClaimed={refreshBalance} />
 
       <div className="console-grid">
         <form className="transfer-panel" onSubmit={submitTransfer}>

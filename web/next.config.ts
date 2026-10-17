@@ -9,8 +9,6 @@ const nextConfig: NextConfig = {
   basePath,
   assetPrefix: basePath,
   trailingSlash: true,
-  cacheComponents: !isGitHubActions,
-  partialPrefetching: !isGitHubActions,
   turbopack: {
     rules: {
       "*.css": {
