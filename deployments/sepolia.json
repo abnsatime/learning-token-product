@@ -14,5 +14,21 @@
     "provider": "sourcify",
     "status": "exact_match",
     "jobId": "3ee9c7e8-0cb9-4db9-8c1c-6a316fda3aac"
+  },
+  "faucet": {
+    "contractName": "LRNFaucet",
+    "address": "0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3",
+    "transactionHash": "0x7ec15226953c828b692d58394737eb5ea18587aec717660637bc9cd9122826d3",
+    "blockNumber": 11933432,
+    "tokenAddress": "0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f",
+    "claimAmount": "100000000000000000000",
+    "initialInventory": "10000000000000000000000",
+    "fundingTransactionHash": "0x26888fb7d77511e69bd6ceaddf7c2e561ffa4be0bdae20fc1c25b32db77e0a70",
+    "fundingBlockNumber": 11933437,
+    "verification": {
+      "provider": "sourcify",
+      "status": "exact_match",
+      "jobId": "f7ed1a22-4065-4e12-97c4-1b3c323245cb"
+    }
   }
 }

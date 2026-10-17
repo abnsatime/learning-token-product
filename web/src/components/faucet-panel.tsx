@@ -3,7 +3,13 @@
 import { useEffect } from "react";
 import { useAccount, useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { sepolia } from "wagmi/chains";
-import { erc20Abi, faucetAbi, faucetAddress, tokenAddress } from "@/lib/contracts";
+import {
+  erc20Abi,
+  faucetAbi,
+  faucetAddress,
+  faucetExplorerUrl,
+  tokenAddress,
+} from "@/lib/contracts";
 import { formatTokenAmount, shortAddress } from "@/lib/format";
 
 export function FaucetPanel({ onClaimed }: { onClaimed: () => void }) {
@@ -91,7 +97,9 @@ export function FaucetPanel({ onClaimed }: { onClaimed: () => void }) {
         <span>Claim</span>
         <strong>{formatTokenAmount(claimAmount.data, 18, 0)} LRN</strong>
         <small>
-          {faucetAddress ? shortAddress(faucetAddress, 6) : "Contract deployment pending"}
+          <a href={faucetExplorerUrl} rel="noreferrer" target="_blank">
+            {shortAddress(faucetAddress, 6)} ↗
+          </a>
         </small>
       </div>
       <div className="faucet-stats">
