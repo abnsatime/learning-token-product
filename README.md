@@ -2,6 +2,8 @@
 
 LRN Portal is a production-shaped ERC-20 reference application built for learning how a complete onchain product fits together. It combines a minimal OpenZeppelin token, Foundry tests and deployment scripts, and a wallet-enabled Next.js interface.
 
+**Live DApp:** <https://abnsatime.github.io/learning-token-product/>
+
 The repository intentionally avoids an application server and database in its first version. Reads go through a Sepolia RPC endpoint, signed writes go from the user's wallet to the token contract, and transfer history is reconstructed from onchain events.
 
 ## Live Sepolia deployment
@@ -62,5 +64,6 @@ The explicit gas multiplier is retained because the current Sepolia execution co
 - Wallet connect, live token reads, and transfers
 - Recent `Transfer` events read directly from chain logs
 - CI checks for both Solidity and TypeScript
+- Static deployment to GitHub Pages after changes reach `main`
 
 This is an educational reference app, not a financial product. It has not been audited.
