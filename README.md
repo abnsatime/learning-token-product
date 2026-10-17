@@ -75,10 +75,21 @@ forge script contracts/script/DeployLRNFaucet.s.sol:DeployLRNFaucet \
 
 After deployment, fund the faucet with an ordinary LRN transfer and set `NEXT_PUBLIC_FAUCET_ADDRESS` for the web build. The faucet cannot mint or withdraw tokens; it only distributes its existing inventory.
 
+### Time Vault development
+
+`LRNTimeVault` introduces the standard two-transaction custody flow used by staking contracts, vaults, and many DeFi protocols:
+
+```text
+approve(vault, amount) -> stake(amount) -> wait until unlock -> withdraw()
+```
+
+The first version deliberately handles principal only. Each address may hold one active position, the seven-day lock duration is immutable, and direct token transfers do not create positions. Rewards will be added only after the principal accounting and withdrawal lifecycle are deployed and verified.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
 - Claim-once testnet faucet using `SafeERC20`
+- Principal-only time vault using `approve` and `transferFrom`
 - Unit and fuzz tests for project-specific configuration
 - Sepolia deployment script
 - Wallet connect, live token reads, and transfers
