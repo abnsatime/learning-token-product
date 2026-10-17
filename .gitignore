@@ -8,6 +8,7 @@
 node_modules/
 .next/
 coverage/
+/pnpm-lock.yaml
 
 # Foundry build output and local broadcasts.
 contracts/out/
