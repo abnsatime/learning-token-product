@@ -2,6 +2,7 @@ import { isAddress, type Address } from "viem";
 
 const referenceAddress = "0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f";
 const referenceFaucetAddress = "0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3";
+const referenceVaultAddress = "0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E";
 const configuredAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS;
 const configuredFaucetAddress = process.env.NEXT_PUBLIC_FAUCET_ADDRESS;
 const configuredVaultAddress = process.env.NEXT_PUBLIC_VAULT_ADDRESS;
@@ -14,9 +15,9 @@ export const faucetAddress: Address = isAddress(configuredFaucetAddress ?? "")
   ? (configuredFaucetAddress as Address)
   : referenceFaucetAddress;
 
-export const vaultAddress: Address | undefined = isAddress(configuredVaultAddress ?? "")
+export const vaultAddress: Address = isAddress(configuredVaultAddress ?? "")
   ? (configuredVaultAddress as Address)
-  : undefined;
+  : referenceVaultAddress;
 
 export const deploymentBlock = BigInt(
   process.env.NEXT_PUBLIC_DEPLOYMENT_BLOCK ?? "11933147",
@@ -25,6 +26,7 @@ export const deploymentBlock = BigInt(
 export const explorerContractUrl = `https://sepolia.etherscan.io/address/${tokenAddress}`;
 export const sourcifyContractUrl = `https://sourcify.dev/#/lookup/${tokenAddress}`;
 export const faucetExplorerUrl = `https://sepolia.etherscan.io/address/${faucetAddress}`;
+export const vaultExplorerUrl = `https://sepolia.etherscan.io/address/${vaultAddress}`;
 
 export const erc20Abi = [
   {

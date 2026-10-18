@@ -10,9 +10,11 @@ The repository intentionally avoids an application server and database in its fi
 
 - Contract: [`0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f`](https://sepolia.etherscan.io/address/0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f)
 - Faucet: [`0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3`](https://sepolia.etherscan.io/address/0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3)
+- Time Vault: [`0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E`](https://sepolia.etherscan.io/address/0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E)
 - Deployment transaction: [`0x9cc399…69ca11`](https://sepolia.etherscan.io/tx/0x9cc39950889d737d966b655a5a4a32b5d32a471d16cc1c693faf532eaa69ca11)
 - Faucet funding: [`10,000 LRN`](https://sepolia.etherscan.io/tx/0x26888fb7d77511e69bd6ceaddf7c2e561ffa4be0bdae20fc1c25b32db77e0a70)
-- Source verification: Sourcify `exact_match` for both contracts
+- Vault reward reserve: [`10,000 LRN`](https://sepolia.etherscan.io/tx/0x1f3edf0984e38bf560ecbfb258ec1aaa62765616c6f19b1a706352d75fd813c5)
+- Source verification: Sourcify `exact_match` for all contracts
 - Deployment metadata: [`deployments/sepolia.json`](deployments/sepolia.json)
 
 ## Repository layout
