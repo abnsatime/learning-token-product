@@ -30,5 +30,26 @@
       "status": "exact_match",
       "jobId": "f7ed1a22-4065-4e12-97c4-1b3c323245cb"
     }
+  },
+  "vault": {
+    "contractName": "LRNTimeVault",
+    "address": "0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E",
+    "transactionHash": "0xd702a12e5b30ee8b5f15757ae14ad61407e80956a7eeeaf2dc06880e7aada48f",
+    "blockNumber": 11942462,
+    "tokenAddress": "0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f",
+    "owner": "0x766956dBFb9914dEDfFBc6c8bD25002aA4B6864A",
+    "plans": [
+      { "id": 0, "durationSeconds": 300, "rewardBps": 100 },
+      { "id": 1, "durationSeconds": 600, "rewardBps": 130 },
+      { "id": 2, "durationSeconds": 1800, "rewardBps": 150 }
+    ],
+    "initialRewardReserve": "10000000000000000000000",
+    "fundingTransactionHash": "0x1f3edf0984e38bf560ecbfb258ec1aaa62765616c6f19b1a706352d75fd813c5",
+    "fundingBlockNumber": 11942469,
+    "verification": {
+      "provider": "sourcify",
+      "status": "exact_match",
+      "jobId": "67b1a1f7-92f8-467d-bb5a-6c4567ee9308"
+    }
   }
 }

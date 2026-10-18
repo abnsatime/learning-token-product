@@ -141,6 +141,37 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
 .button-faucet { background: var(--ink); border-color: var(--ink); color: white; width: 100%; }
 .faucet-action .error-text { color: #8b2d20; margin-bottom: 0; }
 .faucet-action .success-text { color: #0d604e; margin-bottom: 0; }
+.vault-panel { background: #182426; border-top: 1px solid rgba(255,255,255,.1); padding: 44px 40px; }
+.vault-heading { align-items: end; display: grid; gap: 50px; grid-template-columns: 1fr auto; margin-bottom: 30px; }
+.vault-heading h3 { font-family: Georgia,serif; font-size: 34px; font-weight: 400; margin: 0 0 10px; }
+.vault-heading > div:first-child > p:last-child { color: #93a0a2; font-size: 12px; line-height: 1.6; margin: 0; max-width: 600px; }
+.vault-total { border-left: 1px solid rgba(255,255,255,.14); display: flex; flex-direction: column; min-width: 190px; padding-left: 24px; }
+.vault-total span, .vault-total small { color: #829093; font-size: 10px; }
+.vault-total strong { color: var(--orange); font-family: Georgia,serif; font-size: 25px; font-weight: 400; margin: 8px 0; }
+.vault-reserve { margin-top: 6px; }
+.vault-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+.vault-action-card, .vault-position-card { background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.1); border-radius: 17px; padding: 25px; }
+.vault-action-card h4 { font-family: Georgia,serif; font-size: 23px; font-weight: 400; margin: 15px 0 4px; }
+.plan-grid { display: grid; gap: 8px; grid-template-columns: repeat(3, 1fr); margin-top: 18px; }
+.plan-option { background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.12); border-radius: 11px; color: white; display: flex; flex-direction: column; gap: 5px; padding: 12px; text-align: left; }
+.plan-option strong { font-size: 12px; }.plan-option span { color: #879496; font-size: 9px; }
+.plan-option-active { background: rgba(255,155,98,.12); border-color: var(--orange); }.plan-option-active span { color: var(--orange); }
+.vault-action-card label { color: #8a9699; display: block; font-size: 11px; margin: 18px 0 8px; }
+.vault-amount { position: relative; }
+.vault-amount input { background: rgba(255,255,255,.055); border: 1px solid rgba(255,255,255,.13); border-radius: 12px; color: white; height: 50px; outline: none; padding: 0 65px 0 15px; width: 100%; }
+.vault-amount > span { color: var(--orange); font-size: 11px; font-weight: 800; position: absolute; right: 16px; top: 18px; }
+.vault-buttons { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; margin-top: 12px; }
+.vault-preview { color: #879496; font-size: 11px; margin: 12px 0 0; }.vault-preview strong { color: var(--orange); }
+.button-vault-primary { background: var(--orange); border-color: var(--orange); color: var(--ink); }
+.button-vault-secondary { background: transparent; border-color: rgba(255,255,255,.22); color: white; }
+.vault-position-card { display: flex; flex-direction: column; }
+.vault-position-card > span { color: #829093; font-size: 10px; text-transform: uppercase; }
+.vault-position-card > strong { font-family: Georgia,serif; font-size: 38px; font-weight: 400; margin: 12px 0 19px; }
+.vault-position-card dl { border-top: 1px solid rgba(255,255,255,.1); margin: 0 0 auto; }
+.vault-position-card dl > div { border-bottom: 1px solid rgba(255,255,255,.1); display: flex; font-size: 11px; justify-content: space-between; padding: 11px 0; }
+.vault-position-card dt { color: #829093; }.vault-position-card dd { margin: 0; text-align: right; }
+.vault-withdraw-actions { display: grid; gap: 9px; margin-top: 18px; }
+.vault-message { margin-bottom: 0; }
 .console-grid { display: grid; grid-template-columns: .9fr 1.1fr; }
 .transfer-panel, .activity-panel { min-width: 0; padding: 38px 40px 44px; }
 .activity-panel { border-left: 1px solid rgba(255,255,255,.1); }
@@ -185,6 +216,7 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
   .statement-grid, .section-intro { grid-template-columns: 1fr; gap: 32px; }
   .console-grid { grid-template-columns: 1fr; }.activity-panel { border-left: 0; border-top: 1px solid rgba(255,255,255,.1); }
   .faucet-panel { grid-template-columns: 1fr 1fr; }.faucet-copy, .faucet-action { grid-column: 1 / -1; }
+  .vault-heading { align-items: start; grid-template-columns: 1fr; }.vault-total { border-left: 0; border-top: 1px solid rgba(255,255,255,.14); padding: 18px 0 0; }.vault-grid { grid-template-columns: 1fr; }
   .architecture-flow { grid-template-columns: 1fr 1fr; }.architecture-node:nth-child(3) { border-left: 0; border-top: 1px solid rgba(7,16,19,.18); }.architecture-node:nth-child(4) { border-top: 1px solid rgba(7,16,19,.18); }
   .architecture-node i { display: none; }.footer { gap: 22px; grid-template-columns: 1fr; }.footer > a { justify-self: start; }
 }
@@ -195,6 +227,7 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
   .console-topbar, .token-overview { align-items: flex-start; flex-direction: column; gap: 20px; }.contract-links { align-items: flex-start; }.metrics-grid { grid-template-columns: 1fr; }.metric + .metric { border-left: 0; border-top: 1px solid rgba(255,255,255,.1); }
   .metric, .transfer-panel, .activity-panel, .token-overview { padding-left: 24px; padding-right: 24px; }.console-shell { border-radius: 20px; }
   .faucet-panel { grid-template-columns: 1fr; padding: 30px 24px; }.faucet-copy, .faucet-action { grid-column: auto; }.faucet-stats { border-left: 0; border-top: 1px solid rgba(7,16,19,.18); padding: 18px 0 0; }
+  .vault-panel { padding: 34px 24px; }.vault-buttons, .plan-grid { grid-template-columns: 1fr; }
   .architecture-flow { grid-template-columns: 1fr; }.architecture-node + .architecture-node { border-left: 0; border-top: 1px solid rgba(7,16,19,.18); }
   .activity-row { grid-template-columns: 30px 1fr; }.activity-value { grid-column: 2; }.activity-block { display: none; }
 }

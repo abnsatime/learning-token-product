@@ -10,9 +10,11 @@ The repository intentionally avoids an application server and database in its fi
 
 - Contract: [`0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f`](https://sepolia.etherscan.io/address/0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f)
 - Faucet: [`0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3`](https://sepolia.etherscan.io/address/0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3)
+- Time Vault: [`0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E`](https://sepolia.etherscan.io/address/0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E)
 - Deployment transaction: [`0x9cc399…69ca11`](https://sepolia.etherscan.io/tx/0x9cc39950889d737d966b655a5a4a32b5d32a471d16cc1c693faf532eaa69ca11)
 - Faucet funding: [`10,000 LRN`](https://sepolia.etherscan.io/tx/0x26888fb7d77511e69bd6ceaddf7c2e561ffa4be0bdae20fc1c25b32db77e0a70)
-- Source verification: Sourcify `exact_match` for both contracts
+- Vault reward reserve: [`10,000 LRN`](https://sepolia.etherscan.io/tx/0x1f3edf0984e38bf560ecbfb258ec1aaa62765616c6f19b1a706352d75fd813c5)
+- Source verification: Sourcify `exact_match` for all contracts
 - Deployment metadata: [`deployments/sepolia.json`](deployments/sepolia.json)
 
 ## Repository layout
@@ -75,10 +77,23 @@ forge script contracts/script/DeployLRNFaucet.s.sol:DeployLRNFaucet \
 
 After deployment, fund the faucet with an ordinary LRN transfer and set `NEXT_PUBLIC_FAUCET_ADDRESS` for the web build. The faucet cannot mint or withdraw tokens; it only distributes its existing inventory.
 
+### Time Vault development
+
+`LRNTimeVault` introduces the standard two-transaction custody flow used by staking contracts, vaults, and many DeFi protocols:
+
+```text
+approve(vault, amount) -> stake(amount, plan) -> wait -> withdrawPrincipal() -> claimReward()
+```
+
+The Sepolia learning plans are five minutes at 1%, ten minutes at 1.3%, and thirty minutes at 1.5%. These are fixed testnet bonuses, not APRs and not production economics. Each address may hold one active position. Rewards are reserved when staking, principal withdrawal is separate from reward claiming, and direct token transfers fund the reward reserve rather than creating positions.
+
+The OpenZeppelin `Ownable` administrator may recover only the uncommitted reward reserve. Accounting prevents recovery of user principal or rewards already promised to active and completed positions. The administrator cannot modify the plans or extend an existing lock.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
 - Claim-once testnet faucet using `SafeERC20`
+- Pre-funded time vault with separate principal and reward withdrawals
 - Unit and fuzz tests for project-specific configuration
 - Sepolia deployment script
 - Wallet connect, live token reads, and transfers
