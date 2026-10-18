@@ -4,6 +4,7 @@ const referenceAddress = "0xA7de34c97693dDe1d23139a7EAd9fBE17797BE7f";
 const referenceFaucetAddress = "0x05aF66C0CF3C04790aB01aD85Ab7c63F8b1251a3";
 const configuredAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS;
 const configuredFaucetAddress = process.env.NEXT_PUBLIC_FAUCET_ADDRESS;
+const configuredVaultAddress = process.env.NEXT_PUBLIC_VAULT_ADDRESS;
 
 export const tokenAddress: Address = isAddress(configuredAddress ?? "")
   ? (configuredAddress as Address)
@@ -12,6 +13,10 @@ export const tokenAddress: Address = isAddress(configuredAddress ?? "")
 export const faucetAddress: Address = isAddress(configuredFaucetAddress ?? "")
   ? (configuredFaucetAddress as Address)
   : referenceFaucetAddress;
+
+export const vaultAddress: Address | undefined = isAddress(configuredVaultAddress ?? "")
+  ? (configuredVaultAddress as Address)
+  : undefined;
 
 export const deploymentBlock = BigInt(
   process.env.NEXT_PUBLIC_DEPLOYMENT_BLOCK ?? "11933147",
@@ -56,6 +61,26 @@ export const erc20Abi = [
     stateMutability: "view",
     inputs: [{ name: "account", type: "address" }],
     outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "allowance",
+    stateMutability: "view",
+    inputs: [
+      { name: "owner", type: "address" },
+      { name: "spender", type: "address" },
+    ],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "approve",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "spender", type: "address" },
+      { name: "amount", type: "uint256" },
+    ],
+    outputs: [{ name: "", type: "bool" }],
   },
   {
     type: "function",
@@ -108,6 +133,97 @@ export const faucetAbi = [
     inputs: [
       { name: "account", type: "address", indexed: true },
       { name: "amount", type: "uint256", indexed: false },
+    ],
+  },
+] as const;
+
+export const vaultAbi = [
+  {
+    type: "function",
+    name: "totalLocked",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "rewardReserve",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "positions",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [
+      { name: "amount", type: "uint256" },
+      { name: "reward", type: "uint256" },
+      { name: "unlockTime", type: "uint256" },
+      { name: "planId", type: "uint8" },
+    ],
+  },
+  {
+    type: "function",
+    name: "claimableRewards",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ name: "", type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "stake",
+    stateMutability: "nonpayable",
+    inputs: [
+      { name: "amount", type: "uint256" },
+      { name: "planId", type: "uint8" },
+    ],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "withdrawPrincipal",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "claimReward",
+    stateMutability: "nonpayable",
+    inputs: [],
+    outputs: [],
+  },
+  {
+    type: "event",
+    name: "Staked",
+    anonymous: false,
+    inputs: [
+      { name: "account", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+      { name: "reward", type: "uint256", indexed: false },
+      { name: "unlockTime", type: "uint256", indexed: false },
+      { name: "planId", type: "uint8", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "PrincipalWithdrawn",
+    anonymous: false,
+    inputs: [
+      { name: "account", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+      { name: "rewardUnlocked", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "event",
+    name: "RewardClaimed",
+    anonymous: false,
+    inputs: [
+      { name: "account", type: "address", indexed: true },
+      { name: "reward", type: "uint256", indexed: false },
     ],
   },
 ] as const;

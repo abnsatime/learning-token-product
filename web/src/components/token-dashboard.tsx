@@ -19,6 +19,7 @@ import { formatTokenAmount, shortAddress } from "@/lib/format";
 import { RecentTransfers } from "./recent-transfers";
 import { WalletButton } from "./wallet-button";
 import { FaucetPanel } from "./faucet-panel";
+import { VaultPanel } from "./vault-panel";
 
 export function TokenDashboard() {
   const { address, chainId, isConnected } = useAccount();
@@ -137,6 +138,7 @@ export function TokenDashboard() {
       </div>
 
       <FaucetPanel onClaimed={refreshBalance} />
+      <VaultPanel onBalanceChange={refreshBalance} />
 
       <div className="console-grid">
         <form className="transfer-panel" onSubmit={submitTransfer}>

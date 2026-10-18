@@ -80,16 +80,16 @@ After deployment, fund the faucet with an ordinary LRN transfer and set `NEXT_PU
 `LRNTimeVault` introduces the standard two-transaction custody flow used by staking contracts, vaults, and many DeFi protocols:
 
 ```text
-approve(vault, amount) -> stake(amount) -> wait until unlock -> withdraw()
+approve(vault, amount) -> stake(amount, plan) -> wait -> withdrawPrincipal() -> claimReward()
 ```
 
-The first version deliberately handles principal only. Each address may hold one active position, the seven-day lock duration is immutable, and direct token transfers do not create positions. Rewards will be added only after the principal accounting and withdrawal lifecycle are deployed and verified.
+The Sepolia learning plans are five minutes at 1%, ten minutes at 1.3%, and thirty minutes at 1.5%. These are fixed testnet bonuses, not APRs and not production economics. Each address may hold one active position. Rewards are reserved when staking, principal withdrawal is separate from reward claiming, and direct token transfers fund the reward reserve rather than creating positions.
 
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
 - Claim-once testnet faucet using `SafeERC20`
-- Principal-only time vault using `approve` and `transferFrom`
+- Pre-funded time vault with separate principal and reward withdrawals
 - Unit and fuzz tests for project-specific configuration
 - Sepolia deployment script
 - Wallet connect, live token reads, and transfers
