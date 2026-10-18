@@ -3,11 +3,12 @@ pragma solidity 0.8.26;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title LRN Time Vault
 /// @notice Locks LRN principal in one of three testnet plans and unlocks a pre-funded reward.
 /// @dev Principal withdrawal and reward claiming are deliberately separate operations.
-contract LRNTimeVault {
+contract LRNTimeVault is Ownable {
     using SafeERC20 for IERC20;
 
     struct Position {
@@ -26,6 +27,8 @@ contract LRNTimeVault {
     error LRNTimeVaultNoPosition(address account);
     error LRNTimeVaultPositionLocked(uint256 unlockTime, uint256 currentTime);
     error LRNTimeVaultNoClaimableReward(address account);
+    error LRNTimeVaultZeroRecipient();
+    error LRNTimeVaultRecoveryExceedsReserve(uint256 available, uint256 requested);
 
     IERC20 public immutable token;
 
@@ -40,8 +43,9 @@ contract LRNTimeVault {
     );
     event PrincipalWithdrawn(address indexed account, uint256 amount, uint256 rewardUnlocked);
     event RewardClaimed(address indexed account, uint256 reward);
+    event RewardReserveRecovered(address indexed recipient, uint256 amount);
 
-    constructor(address tokenAddress) {
+    constructor(address tokenAddress, address initialOwner) Ownable(initialOwner) {
         if (tokenAddress == address(0)) revert LRNTimeVaultZeroToken();
         token = IERC20(tokenAddress);
     }
@@ -116,5 +120,18 @@ contract LRNTimeVault {
         token.safeTransfer(msg.sender, reward);
 
         emit RewardClaimed(msg.sender, reward);
+    }
+
+    function recoverRewardReserve(address recipient, uint256 amount) external onlyOwner {
+        if (recipient == address(0)) revert LRNTimeVaultZeroRecipient();
+
+        uint256 available = rewardReserve();
+        if (amount > available) {
+            revert LRNTimeVaultRecoveryExceedsReserve(available, amount);
+        }
+
+        token.safeTransfer(recipient, amount);
+
+        emit RewardReserveRecovered(recipient, amount);
     }
 }

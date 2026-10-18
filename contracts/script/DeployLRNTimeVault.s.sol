@@ -7,9 +7,10 @@ import { LRNTimeVault } from "../src/LRNTimeVault.sol";
 contract DeployLRNTimeVault is Script {
     function run() external returns (LRNTimeVault vault) {
         address tokenAddress = vm.envAddress("TOKEN_ADDRESS");
+        address initialOwner = vm.envAddress("VAULT_OWNER");
 
         vm.startBroadcast();
-        vault = new LRNTimeVault(tokenAddress);
+        vault = new LRNTimeVault(tokenAddress, initialOwner);
         vm.stopBroadcast();
     }
 }

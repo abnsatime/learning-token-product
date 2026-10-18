@@ -85,6 +85,8 @@ approve(vault, amount) -> stake(amount, plan) -> wait -> withdrawPrincipal() -> 
 
 The Sepolia learning plans are five minutes at 1%, ten minutes at 1.3%, and thirty minutes at 1.5%. These are fixed testnet bonuses, not APRs and not production economics. Each address may hold one active position. Rewards are reserved when staking, principal withdrawal is separate from reward claiming, and direct token transfers fund the reward reserve rather than creating positions.
 
+The OpenZeppelin `Ownable` administrator may recover only the uncommitted reward reserve. Accounting prevents recovery of user principal or rewards already promised to active and completed positions. The administrator cannot modify the plans or extend an existing lock.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts

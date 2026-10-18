@@ -3,6 +3,7 @@ pragma solidity 0.8.26;
 
 import { Test } from "forge-std/Test.sol";
 import { IERC20Errors } from "@openzeppelin/contracts/interfaces/draft-IERC6093.sol";
+import { Ownable } from "@openzeppelin/contracts/access/Ownable.sol";
 import { LRNTimeVault } from "../src/LRNTimeVault.sol";
 import { LRNToken } from "../src/LRNToken.sol";
 
@@ -21,10 +22,11 @@ contract LRNTimeVaultTest is Test {
     );
     event PrincipalWithdrawn(address indexed account, uint256 amount, uint256 rewardUnlocked);
     event RewardClaimed(address indexed account, uint256 reward);
+    event RewardReserveRecovered(address indexed recipient, uint256 amount);
 
     function setUp() public {
         token = new LRNToken(address(this));
-        vault = new LRNTimeVault(address(token));
+        vault = new LRNTimeVault(address(token), address(this));
         token.transfer(address(vault), REWARD_POOL);
         token.transfer(learner, USER_BALANCE);
         token.transfer(secondLearner, USER_BALANCE);
@@ -32,6 +34,7 @@ contract LRNTimeVaultTest is Test {
 
     function test_ConfigurationAndPlans() public view {
         assertEq(address(vault.token()), address(token));
+        assertEq(vault.owner(), address(this));
 
         (uint256 fiveMinuteDuration, uint256 fiveMinuteReward) = vault.planDetails(0);
         (uint256 tenMinuteDuration, uint256 tenMinuteReward) = vault.planDetails(1);
@@ -91,7 +94,7 @@ contract LRNTimeVaultTest is Test {
     }
 
     function test_RevertWhenRewardReserveIsInsufficient() public {
-        LRNTimeVault emptyVault = new LRNTimeVault(address(token));
+        LRNTimeVault emptyVault = new LRNTimeVault(address(token), address(this));
         uint256 expectedReward = STAKE_AMOUNT / 100;
 
         vm.startPrank(learner);
@@ -211,7 +214,37 @@ contract LRNTimeVaultTest is Test {
 
     function test_RevertWhenTokenAddressIsZero() public {
         vm.expectRevert(LRNTimeVault.LRNTimeVaultZeroToken.selector);
-        new LRNTimeVault(address(0));
+        new LRNTimeVault(address(0), address(this));
+    }
+
+    function test_OwnerCanRecoverOnlyUncommittedRewards() public {
+        uint256 recoveryAmount = 1_000 ether;
+
+        vm.expectEmit(true, false, false, true, address(vault));
+        emit RewardReserveRecovered(address(this), recoveryAmount);
+        vault.recoverRewardReserve(address(this), recoveryAmount);
+
+        assertEq(vault.rewardReserve(), REWARD_POOL - recoveryAmount);
+    }
+
+    function test_RevertWhenRecoveryWouldUseCommittedRewards() public {
+        _stakeAs(learner, STAKE_AMOUNT, 0);
+        uint256 available = vault.rewardReserve();
+
+        vm.expectRevert(
+            abi.encodeWithSelector(
+                LRNTimeVault.LRNTimeVaultRecoveryExceedsReserve.selector, available, available + 1
+            )
+        );
+        vault.recoverRewardReserve(address(this), available + 1);
+    }
+
+    function test_RevertWhenNonOwnerRecoversRewards() public {
+        vm.expectRevert(
+            abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, learner)
+        );
+        vm.prank(learner);
+        vault.recoverRewardReserve(learner, 1 ether);
     }
 
     function _stakeAs(address account, uint256 amount, uint8 planId) internal {
