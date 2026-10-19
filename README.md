@@ -105,6 +105,12 @@ The Sepolia learning plans are five minutes at 1%, ten minutes at 1.3%, and thir
 
 The OpenZeppelin `Ownable` administrator may recover only the uncommitted reward reserve. Accounting prevents recovery of user principal or rewards already promised to active and completed positions. The administrator cannot modify the plans or extend an existing lock.
 
+### LRN V2 emission experiment
+
+`LRNTokenV2` is an independent capped token experiment; it does not modify or replace the deployed fixed-supply LRN. It starts with 1,000,000 LRN2, caps supply at 2,000,000 LRN2, and grants `MINTER_ROLE` only to `LRNEmissionController`.
+
+The controller releases a fixed 50,000 LRN2 per elapsed test epoch to a configured treasury. The default test epoch is ten minutes. This is a linear 5% of initial supply, not a compounding 5% of current supply. Anyone may trigger a matured release, but callers cannot change its amount, recipient, schedule, or cap. Missed epochs are caught up one transaction at a time.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
