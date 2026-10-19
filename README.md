@@ -111,6 +111,10 @@ The OpenZeppelin `Ownable` administrator may recover only the uncommitted reward
 
 The controller releases a fixed 50,000 LRN2 per elapsed test epoch to a configured treasury. The default test epoch is ten minutes. This is a linear 5% of initial supply, not a compounding 5% of current supply. Anyone may trigger a matured release, but callers cannot change its amount, recipient, schedule, or cap. Missed epochs are caught up one transaction at a time.
 
+LRN2 also uses `ERC20Votes`. Holders activate voting power by delegating to themselves or another address. `LRNGovernor` uses a one-block voting delay, a twenty-block test voting period, a 4% quorum, and a 1,000 LRN2 proposal threshold. Successful proposals are queued in `TimelockController` for five minutes before execution. The timelock holds the token's admin role, so governance can grant or revoke the controller's minter permission without giving the Governor direct authority.
+
+The treasury address is intended to be a production Safe multisig. The repository does not implement a custom multisig because treasury signing, replay protection, recovery, modules, and signer rotation should use an independently reviewed implementation.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
