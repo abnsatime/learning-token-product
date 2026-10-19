@@ -22,6 +22,7 @@ The repository intentionally avoids an application server and database in its fi
 ```text
 contracts/             OpenZeppelin ERC-20, Foundry tests, deployment script
 web/                   Next.js App Router DApp
+indexer/               Sepolia event sync, SQLite storage, read-only HTTP API
 .github/workflows/     Continuous integration
 ```
 
@@ -41,6 +42,21 @@ pnpm --dir web dev
 ```
 
 Open <http://localhost:3000>. The default configuration points to a verified Sepolia learning deployment, so read-only data works without connecting a wallet.
+
+## Event indexer
+
+The optional local indexer converts confirmed blockchain logs into queryable application data:
+
+```bash
+cp indexer/.env.example indexer/.env
+pnpm --dir indexer install
+pnpm --dir indexer sync:once
+pnpm --dir indexer start
+```
+
+Read <http://127.0.0.1:8787/health> for sync status and `/events` for recent activity. `/events?account=0x...&event=Staked&limit=20` applies address and event filters.
+
+The learning implementation uses Node 22's experimental built-in SQLite module and begins at the Time Vault deployment block because the free RPC does not provide older archive history. It waits for 12 confirmations, syncs in bounded chunks, stores token quantities as exact decimal strings, and uses transaction hash plus log index as an idempotency key. A production multi-instance service should use an archive RPC and PostgreSQL.
 
 ## Contract deployment
 

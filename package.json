@@ -7,6 +7,9 @@
     "dev": "pnpm --dir web dev",
     "build:web": "pnpm --dir web build",
     "lint:web": "pnpm --dir web lint",
+    "dev:indexer": "pnpm --dir indexer dev",
+    "sync:indexer": "pnpm --dir indexer sync:once",
+    "typecheck:indexer": "pnpm --dir indexer typecheck",
     "build:contracts": "forge build --root contracts",
     "test:contracts": "forge test --root contracts -vvv"
   }
