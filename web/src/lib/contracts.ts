@@ -6,6 +6,10 @@ const referenceVaultAddress = "0x8FA2D5f71c5F965E7FAe4860Ae2C720b3d076a7E";
 const configuredAddress = process.env.NEXT_PUBLIC_TOKEN_ADDRESS;
 const configuredFaucetAddress = process.env.NEXT_PUBLIC_FAUCET_ADDRESS;
 const configuredVaultAddress = process.env.NEXT_PUBLIC_VAULT_ADDRESS;
+const configuredV2TokenAddress = process.env.NEXT_PUBLIC_V2_TOKEN_ADDRESS;
+const configuredV2ControllerAddress = process.env.NEXT_PUBLIC_V2_CONTROLLER_ADDRESS;
+const configuredV2TimelockAddress = process.env.NEXT_PUBLIC_V2_TIMELOCK_ADDRESS;
+const configuredV2GovernorAddress = process.env.NEXT_PUBLIC_V2_GOVERNOR_ADDRESS;
 
 export const tokenAddress: Address = isAddress(configuredAddress ?? "")
   ? (configuredAddress as Address)
@@ -18,6 +22,18 @@ export const faucetAddress: Address = isAddress(configuredFaucetAddress ?? "")
 export const vaultAddress: Address = isAddress(configuredVaultAddress ?? "")
   ? (configuredVaultAddress as Address)
   : referenceVaultAddress;
+
+function optionalAddress(value?: string): Address | undefined {
+  return isAddress(value ?? "") ? (value as Address) : undefined;
+}
+
+export const v2TokenAddress = optionalAddress(configuredV2TokenAddress);
+export const v2ControllerAddress = optionalAddress(configuredV2ControllerAddress);
+export const v2TimelockAddress = optionalAddress(configuredV2TimelockAddress);
+export const v2GovernorAddress = optionalAddress(configuredV2GovernorAddress);
+export const governanceReady = Boolean(
+  v2TokenAddress && v2ControllerAddress && v2TimelockAddress && v2GovernorAddress,
+);
 
 export const deploymentBlock = BigInt(
   process.env.NEXT_PUBLIC_DEPLOYMENT_BLOCK ?? "11933147",
@@ -228,4 +244,37 @@ export const vaultAbi = [
       { name: "reward", type: "uint256", indexed: false },
     ],
   },
+] as const;
+
+export const v2TokenAbi = [
+  { type: "function", name: "totalSupply", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "cap", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "balanceOf", stateMutability: "view", inputs: [{ name: "account", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "getVotes", stateMutability: "view", inputs: [{ name: "account", type: "address" }], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "delegates", stateMutability: "view", inputs: [{ name: "account", type: "address" }], outputs: [{ name: "", type: "address" }] },
+  { type: "function", name: "delegate", stateMutability: "nonpayable", inputs: [{ name: "delegatee", type: "address" }], outputs: [] },
+  { type: "function", name: "revokeRole", stateMutability: "nonpayable", inputs: [{ name: "role", type: "bytes32" }, { name: "account", type: "address" }], outputs: [] },
+] as const;
+
+export const emissionControllerAbi = [
+  { type: "function", name: "treasury", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "address" }] },
+  { type: "function", name: "emissionAmount", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "nextEmissionTime", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "epochsReleased", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "totalReleased", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+] as const;
+
+export const timelockAbi = [
+  { type: "function", name: "getMinDelay", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+] as const;
+
+export const governorAbi = [
+  { type: "function", name: "proposalThreshold", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "quorumNumerator", stateMutability: "view", inputs: [], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "state", stateMutability: "view", inputs: [{ name: "proposalId", type: "uint256" }], outputs: [{ name: "", type: "uint8" }] },
+  { type: "function", name: "hashProposal", stateMutability: "pure", inputs: [{ name: "targets", type: "address[]" }, { name: "values", type: "uint256[]" }, { name: "calldatas", type: "bytes[]" }, { name: "descriptionHash", type: "bytes32" }], outputs: [{ name: "", type: "uint256" }] },
+  { type: "function", name: "propose", stateMutability: "nonpayable", inputs: [{ name: "targets", type: "address[]" }, { name: "values", type: "uint256[]" }, { name: "calldatas", type: "bytes[]" }, { name: "description", type: "string" }], outputs: [{ name: "proposalId", type: "uint256" }] },
+  { type: "function", name: "castVote", stateMutability: "nonpayable", inputs: [{ name: "proposalId", type: "uint256" }, { name: "support", type: "uint8" }], outputs: [{ name: "weight", type: "uint256" }] },
+  { type: "function", name: "queue", stateMutability: "nonpayable", inputs: [{ name: "targets", type: "address[]" }, { name: "values", type: "uint256[]" }, { name: "calldatas", type: "bytes[]" }, { name: "descriptionHash", type: "bytes32" }], outputs: [{ name: "proposalId", type: "uint256" }] },
+  { type: "function", name: "execute", stateMutability: "payable", inputs: [{ name: "targets", type: "address[]" }, { name: "values", type: "uint256[]" }, { name: "calldatas", type: "bytes[]" }, { name: "descriptionHash", type: "bytes32" }], outputs: [{ name: "proposalId", type: "uint256" }] },
 ] as const;

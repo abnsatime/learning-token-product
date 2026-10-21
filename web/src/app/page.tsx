@@ -1,4 +1,5 @@
 import { TokenDashboard } from "@/components/token-dashboard";
+import { GovernanceLab } from "@/components/governance-lab";
 import { explorerContractUrl, sourcifyContractUrl } from "@/lib/contracts";
 
 const architecture = [
@@ -19,6 +20,7 @@ export default function Home() {
         <div className="nav-links">
           <a href="#console">Console</a>
           <a href="#architecture">Architecture</a>
+          <a href="#governance">Governance</a>
           <a href={explorerContractUrl} rel="noreferrer" target="_blank">Etherscan ↗</a>
         </div>
       </nav>
@@ -102,6 +104,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <GovernanceLab />
 
       <footer className="footer page-width">
         <div className="brand"><span className="brand-mark">L</span><span>LRN / PORTAL</span></div>
