@@ -198,6 +198,21 @@ button:disabled { cursor: not-allowed; opacity: 0.58; }
 .activity-block { font-family: ui-monospace, monospace; font-size: 9px; grid-column: 2; }
 .muted, .error-text, .success-text { color: #859194; font-size: 12px; line-height: 1.5; }
 .error-text { color: #ff9e8e; }.success-text { color: var(--cyan); }.success-text a { text-decoration: underline; }
+.transaction-status {
+  align-items: start; background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.12); border-radius: 12px;
+  color: #b8c3c5; display: grid; font-size: 11px; gap: 11px; grid-template-columns: 9px 1fr; margin-top: 16px; padding: 14px;
+}
+.transaction-status-dot { background: #758184; border-radius: 50%; height: 8px; margin-top: 4px; width: 8px; }
+.transaction-status strong { color: white; display: block; font-size: 12px; }
+.transaction-status p { line-height: 1.5; margin: 5px 0 0; }
+.transaction-status a { color: var(--cyan); display: inline-block; font-family: ui-monospace,monospace; margin-top: 8px; }
+.transaction-status-wallet .transaction-status-dot { background: var(--orange); box-shadow: 0 0 0 4px rgba(255,155,98,.12); }
+.transaction-status-confirming .transaction-status-dot { animation: pulse 1.5s infinite; background: var(--cyan); }
+.transaction-status-success .transaction-status-dot { background: var(--cyan); box-shadow: 0 0 0 4px rgba(115,245,211,.1); }
+.transaction-status-error { border-color: rgba(255,158,142,.28); }.transaction-status-error .transaction-status-dot { background: #ff9e8e; }
+.faucet-action .transaction-status { background: rgba(7,16,19,.075); border-color: rgba(7,16,19,.16); color: #31534c; }
+.faucet-action .transaction-status strong { color: var(--ink); }.faucet-action .transaction-status a { color: #075e4a; }
+.vault-panel > .transaction-status { margin-top: 18px; }
 
 .architecture-section { background: #dfeadd; padding: 125px 0; }
 .architecture-intro { margin-bottom: 75px; }

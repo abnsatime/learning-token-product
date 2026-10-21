@@ -19,6 +19,7 @@ import { formatTokenAmount, shortAddress } from "@/lib/format";
 import { RecentTransfers } from "./recent-transfers";
 import { WalletButton } from "./wallet-button";
 import { FaucetPanel } from "./faucet-panel";
+import { TransactionStatus } from "./transaction-status";
 import { VaultPanel } from "./vault-panel";
 
 export function TokenDashboard() {
@@ -86,10 +87,6 @@ export function TokenDashboard() {
       // Wagmi exposes the wallet or simulation error below the form.
     }
   }
-
-  const transactionUrl = write.data
-    ? `https://sepolia.etherscan.io/tx/${write.data}`
-    : undefined;
 
   return (
     <div className="console-shell">
@@ -179,15 +176,15 @@ export function TokenDashboard() {
                 : "Review transfer"}
           </button>
 
-          {(formError || write.error) && (
-            <p className="error-text">{formError ?? write.error?.message}</p>
-          )}
-          {receipt.isSuccess && transactionUrl && (
-            <p className="success-text">
-              Confirmed on Sepolia. {" "}
-              <a href={transactionUrl} rel="noreferrer" target="_blank">View transaction ↗</a>
-            </p>
-          )}
+          {formError && <p className="error-text">{formError}</p>}
+          <TransactionStatus
+            error={write.error ?? receipt.error}
+            hash={write.data}
+            isConfirming={receipt.isLoading}
+            isSuccess={receipt.isSuccess}
+            isWaitingForWallet={write.isPending}
+            successMessage="Transfer confirmed and your LRN balance has been refreshed."
+          />
         </form>
 
         <RecentTransfers />

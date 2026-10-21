@@ -11,6 +11,7 @@ import {
   tokenAddress,
 } from "@/lib/contracts";
 import { formatTokenAmount, shortAddress } from "@/lib/format";
+import { TransactionStatus } from "./transaction-status";
 
 export function FaucetPanel({ onClaimed }: { onClaimed: () => void }) {
   const { address, chainId, isConnected } = useAccount();
@@ -112,16 +113,14 @@ export function FaucetPanel({ onClaimed }: { onClaimed: () => void }) {
         <button className="button button-faucet" disabled={disabled} onClick={claim} type="button">
           {buttonLabel}
         </button>
-        {write.error && <p className="error-text">{write.error.message}</p>}
-        {receipt.isSuccess && (
-          <p className="success-text">
-            Claim confirmed. {write.data && (
-              <a href={`https://sepolia.etherscan.io/tx/${write.data}`} rel="noreferrer" target="_blank">
-                View transaction ↗
-              </a>
-            )}
-          </p>
-        )}
+        <TransactionStatus
+          error={write.error ?? receipt.error}
+          hash={write.data}
+          isConfirming={receipt.isLoading}
+          isSuccess={receipt.isSuccess}
+          isWaitingForWallet={write.isPending}
+          successMessage="Claim confirmed and the LRN balance has been refreshed."
+        />
       </div>
     </section>
   );

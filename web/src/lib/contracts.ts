@@ -95,6 +95,29 @@ export const erc20Abi = [
     outputs: [{ name: "", type: "bool" }],
   },
   {
+    type: "error",
+    name: "ERC20InsufficientBalance",
+    inputs: [
+      { name: "sender", type: "address" },
+      { name: "balance", type: "uint256" },
+      { name: "needed", type: "uint256" },
+    ],
+  },
+  {
+    type: "error",
+    name: "ERC20InsufficientAllowance",
+    inputs: [
+      { name: "spender", type: "address" },
+      { name: "allowance", type: "uint256" },
+      { name: "needed", type: "uint256" },
+    ],
+  },
+  {
+    type: "error",
+    name: "ERC20InvalidReceiver",
+    inputs: [{ name: "receiver", type: "address" }],
+  },
+  {
     type: "event",
     name: "Transfer",
     anonymous: false,
@@ -127,6 +150,19 @@ export const faucetAbi = [
     stateMutability: "nonpayable",
     inputs: [],
     outputs: [],
+  },
+  {
+    type: "error",
+    name: "LRNFaucetAlreadyClaimed",
+    inputs: [{ name: "account", type: "address" }],
+  },
+  {
+    type: "error",
+    name: "LRNFaucetInsufficientBalance",
+    inputs: [
+      { name: "available", type: "uint256" },
+      { name: "required", type: "uint256" },
+    ],
   },
   {
     type: "event",
@@ -196,6 +232,62 @@ export const vaultAbi = [
     stateMutability: "nonpayable",
     inputs: [],
     outputs: [],
+  },
+  {
+    type: "error",
+    name: "ERC20InsufficientBalance",
+    inputs: [
+      { name: "sender", type: "address" },
+      { name: "balance", type: "uint256" },
+      { name: "needed", type: "uint256" },
+    ],
+  },
+  {
+    type: "error",
+    name: "ERC20InsufficientAllowance",
+    inputs: [
+      { name: "spender", type: "address" },
+      { name: "allowance", type: "uint256" },
+      { name: "needed", type: "uint256" },
+    ],
+  },
+  { type: "error", name: "LRNTimeVaultZeroAmount", inputs: [] },
+  {
+    type: "error",
+    name: "LRNTimeVaultInvalidPlan",
+    inputs: [{ name: "planId", type: "uint8" }],
+  },
+  { type: "error", name: "LRNTimeVaultRewardRoundsToZero", inputs: [] },
+  {
+    type: "error",
+    name: "LRNTimeVaultInsufficientRewardReserve",
+    inputs: [
+      { name: "available", type: "uint256" },
+      { name: "required", type: "uint256" },
+    ],
+  },
+  {
+    type: "error",
+    name: "LRNTimeVaultActivePosition",
+    inputs: [{ name: "account", type: "address" }],
+  },
+  {
+    type: "error",
+    name: "LRNTimeVaultNoPosition",
+    inputs: [{ name: "account", type: "address" }],
+  },
+  {
+    type: "error",
+    name: "LRNTimeVaultPositionLocked",
+    inputs: [
+      { name: "unlockTime", type: "uint256" },
+      { name: "currentTime", type: "uint256" },
+    ],
+  },
+  {
+    type: "error",
+    name: "LRNTimeVaultNoClaimableReward",
+    inputs: [{ name: "account", type: "address" }],
   },
   {
     type: "event",

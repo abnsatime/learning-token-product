@@ -43,6 +43,18 @@ pnpm --dir web dev
 
 Open <http://localhost:3000>. The default configuration points to a verified Sepolia learning deployment, so read-only data works without connecting a wallet.
 
+## DApp transaction lifecycle
+
+Read-only contract calls use the configured RPC endpoint and require no wallet signature. A write moves through four distinct UI states:
+
+```text
+wallet confirmation -> transaction broadcast -> block confirmation -> refreshed contract state
+```
+
+A wallet signature authorizes a transaction but does not prove that it succeeded. The shared transaction status component follows the transaction hash until a receipt is available, links the hash to Etherscan, and refreshes the affected reads only after confirmation. Wallet rejection, insufficient Sepolia ETH, decoded contract custom errors, and common nonce errors are converted into concise user-facing messages.
+
+The contract ABIs include custom error definitions as well as functions and events. Those error entries do not change the deployed contracts; they give the client enough type information to decode revert data returned by the EVM.
+
 ## Event indexer
 
 The optional local indexer converts confirmed blockchain logs into queryable application data:
