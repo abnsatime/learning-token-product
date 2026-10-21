@@ -135,12 +135,12 @@ export function GovernanceLab() {
     <section className="governance-lab page-width" id="governance">
       <div className="governance-header">
         <div>
-          <p className="eyebrow">V2 governance lab</p>
+          <p className="eyebrow">V2 governance lab · feature preview</p>
           <h2>Policy moves slower<br />than capital.</h2>
-          <p>Delegate votes, stop emissions through a proposal, and wait for the timelock before protocol authority can act.</p>
+          <p>Delegate votes, stop emissions through a proposal, and wait for the timelock before protocol authority can act. V2 deployment is intentionally deferred; this interface remains as a reviewable feature preview.</p>
         </div>
         <div className={`deployment-status ${governanceReady ? "deployment-ready" : ""}`}>
-          <span />{governanceReady ? "Sepolia deployment active" : "Deployment pending"}
+          <span />{governanceReady ? "Sepolia deployment active" : "Deployment deferred"}
         </div>
       </div>
 
@@ -179,7 +179,7 @@ export function GovernanceLab() {
         </div>
       </div>
 
-      <div className="governance-footer"><WalletButton /><span>Controller {v2ControllerAddress ? shortAddress(v2ControllerAddress, 6) : "pending"}</span></div>
+      <div className="governance-footer"><WalletButton /><span>Controller {v2ControllerAddress ? shortAddress(v2ControllerAddress, 6) : "not deployed"}</span></div>
       {error && <p className="error-text governance-error">{error.message}</p>}
     </section>
   );

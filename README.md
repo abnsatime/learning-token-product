@@ -115,6 +115,12 @@ LRN2 also uses `ERC20Votes`. Holders activate voting power by delegating to them
 
 The treasury address is intended to be a production Safe multisig. The repository does not implement a custom multisig because treasury signing, replay protection, recovery, modules, and signer rotation should use an independently reviewed implementation.
 
+### V2 deployment status
+
+> **Deferred:** the V2 contracts and governance DApp are implemented and tested on the `feat/lrn-v2-emissions` branch, but they have intentionally not been deployed or merged. The four V2 web environment variables remain empty, so the governance page is a non-interactive feature preview. The public GitHub Pages deployment continues to run V1.
+
+Deployment can resume from [`docs/V2_DEPLOYMENT.md`](docs/V2_DEPLOYMENT.md). The remaining product decision is the Sepolia Safe 2-of-3 treasury and its three signer addresses; predicted dry-run addresses must never be copied into the DApp.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
@@ -126,5 +132,6 @@ The treasury address is intended to be a production Safe multisig. The repositor
 - Recent `Transfer` events read directly from chain logs
 - CI checks for both Solidity and TypeScript
 - Static deployment to GitHub Pages after changes reach `main`
+- Non-interactive V2 governance feature preview while deployment is deferred
 
 This is an educational reference app, not a financial product. It has not been audited.
