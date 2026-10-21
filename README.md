@@ -105,6 +105,22 @@ The Sepolia learning plans are five minutes at 1%, ten minutes at 1.3%, and thir
 
 The OpenZeppelin `Ownable` administrator may recover only the uncommitted reward reserve. Accounting prevents recovery of user principal or rewards already promised to active and completed positions. The administrator cannot modify the plans or extend an existing lock.
 
+### LRN V2 emission experiment
+
+`LRNTokenV2` is an independent capped token experiment; it does not modify or replace the deployed fixed-supply LRN. It starts with 1,000,000 LRN2, caps supply at 2,000,000 LRN2, and grants `MINTER_ROLE` only to `LRNEmissionController`.
+
+The controller releases a fixed 50,000 LRN2 per elapsed test epoch to a configured treasury. The default test epoch is ten minutes. This is a linear 5% of initial supply, not a compounding 5% of current supply. Anyone may trigger a matured release, but callers cannot change its amount, recipient, schedule, or cap. Missed epochs are caught up one transaction at a time.
+
+LRN2 also uses `ERC20Votes`. Holders activate voting power by delegating to themselves or another address. `LRNGovernor` uses a one-block voting delay, a twenty-block test voting period, a 4% quorum, and a 1,000 LRN2 proposal threshold. Successful proposals are queued in `TimelockController` for five minutes before execution. The timelock holds the token's admin role, so governance can grant or revoke the controller's minter permission without giving the Governor direct authority.
+
+The treasury address is intended to be a production Safe multisig. The repository does not implement a custom multisig because treasury signing, replay protection, recovery, modules, and signer rotation should use an independently reviewed implementation.
+
+### V2 deployment status
+
+> **Deferred:** the V2 contracts and governance DApp are implemented and tested on the `feat/lrn-v2-emissions` branch, but they have intentionally not been deployed or merged. The four V2 web environment variables remain empty, so the governance page is a non-interactive feature preview. The public GitHub Pages deployment continues to run V1.
+
+Deployment can resume from [`docs/V2_DEPLOYMENT.md`](docs/V2_DEPLOYMENT.md). The remaining product decision is the Sepolia Safe 2-of-3 treasury and its three signer addresses; predicted dry-run addresses must never be copied into the DApp.
+
 ## Current scope
 
 - Fixed-supply ERC-20 using OpenZeppelin Contracts
@@ -116,5 +132,6 @@ The OpenZeppelin `Ownable` administrator may recover only the uncommitted reward
 - Recent `Transfer` events read directly from chain logs
 - CI checks for both Solidity and TypeScript
 - Static deployment to GitHub Pages after changes reach `main`
+- Non-interactive V2 governance feature preview while deployment is deferred
 
 This is an educational reference app, not a financial product. It has not been audited.
