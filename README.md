@@ -66,6 +66,15 @@ pnpm --dir web test:watch
 
 The pure-function tests lock down error translation and explorer URLs. The component tests verify the idle, wallet, confirming, success, and failure presentations through the same accessible status region used by the DApp. CI runs the suite before linting and the production build, so a failed assertion blocks the pull request.
 
+Playwright adds a browser-level check of the assembled application:
+
+```bash
+pnpm --dir web exec playwright install chromium
+pnpm --dir web test:e2e
+```
+
+The E2E suite starts a local Next.js server, opens Chromium, follows the console anchor, checks disconnected-wallet validation, verifies the public source link, and detects horizontal overflow at a mobile viewport. It deliberately does not automate wallet signing or store a test private key. The production build remains a separate CI step because GitHub Pages uses a static export.
+
 ## Event indexer
 
 The optional local indexer converts confirmed blockchain logs into queryable application data:
