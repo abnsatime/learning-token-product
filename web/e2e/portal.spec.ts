@@ -32,6 +32,16 @@ test("exposes the verified contract source", async ({ page }) => {
   await expect(sourceLink).toHaveAttribute("target", "_blank");
 });
 
+test("opens the wallet-scoped activity page", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("link", { name: "My activity" }).click();
+
+  await expect(page).toHaveURL(/\/me\/$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Your onchain trail." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "Connect to reveal your trail." })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Connect wallet", exact: true })).toBeVisible();
+});
+
 test.describe("mobile layout", () => {
   test.use({ viewport: { width: 390, height: 844 } });
 

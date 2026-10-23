@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { TokenDashboard } from "@/components/token-dashboard";
 import { explorerContractUrl, sourcifyContractUrl } from "@/lib/contracts";
 
@@ -19,6 +20,7 @@ export default function Home() {
         <div className="nav-links">
           <a href="#console">Console</a>
           <a href="#architecture">Architecture</a>
+          <Link className="nav-primary" href="/me">My activity</Link>
           <a href={explorerContractUrl} rel="noreferrer" target="_blank">Etherscan ↗</a>
         </div>
       </nav>
