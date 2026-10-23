@@ -8,6 +8,7 @@
     "build:web": "pnpm --dir web build",
     "lint:web": "pnpm --dir web lint",
     "test:web": "pnpm --dir web test",
+    "test:e2e": "pnpm --dir web test:e2e",
     "dev:indexer": "pnpm --dir indexer dev",
     "sync:indexer": "pnpm --dir indexer sync:once",
     "typecheck:indexer": "pnpm --dir indexer typecheck",
