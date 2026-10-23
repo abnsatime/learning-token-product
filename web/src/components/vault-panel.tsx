@@ -12,6 +12,7 @@ import {
 import { sepolia } from "wagmi/chains";
 import { erc20Abi, tokenAddress, vaultAbi, vaultAddress } from "@/lib/contracts";
 import { formatTokenAmount, shortAddress } from "@/lib/format";
+import { TransactionStatus } from "./transaction-status";
 
 const ZERO = BigInt(0);
 const BPS_DENOMINATOR = BigInt(10_000);
@@ -20,6 +21,15 @@ const plans = [
   { id: 1, label: "10 min", rewardBps: 130, rewardLabel: "1.3%" },
   { id: 2, label: "30 min", rewardBps: 150, rewardLabel: "1.5%" },
 ] as const;
+
+type VaultAction = "approve" | "stake" | "withdraw" | "reward";
+
+const successMessages: Record<VaultAction, string> = {
+  approve: "Allowance confirmed. The position is ready for the Stake transaction.",
+  stake: "Position opened and its reward has been reserved.",
+  withdraw: "Principal returned. The promised reward is now separately claimable.",
+  reward: "Reward claimed and the vault reserve has been refreshed.",
+};
 
 function formatUnlockTime(timestamp?: bigint) {
   if (!timestamp || timestamp === ZERO) return "No active lock";
@@ -30,6 +40,7 @@ export function VaultPanel({ onBalanceChange }: { onBalanceChange: () => void })
   const { address, chainId, isConnected } = useAccount();
   const [amount, setAmount] = useState("");
   const [planId, setPlanId] = useState(0);
+  const [activeAction, setActiveAction] = useState<VaultAction>();
   const enabled = Boolean(vaultAddress);
 
   let parsedAmount: bigint | undefined;
@@ -134,6 +145,7 @@ export function VaultPanel({ onBalanceChange }: { onBalanceChange: () => void })
 
   async function approve() {
     if (!vaultAddress || !parsedAmount || wrongNetwork) return;
+    setActiveAction("approve");
     try {
       await approveWrite.writeContractAsync({ address: tokenAddress, abi: erc20Abi, functionName: "approve", args: [vaultAddress, parsedAmount], chainId: sepolia.id });
     } catch {}
@@ -141,6 +153,7 @@ export function VaultPanel({ onBalanceChange }: { onBalanceChange: () => void })
 
   async function stake() {
     if (!vaultAddress || !parsedAmount || !approvalReady || !reserveReady || wrongNetwork) return;
+    setActiveAction("stake");
     try {
       await stakeWrite.writeContractAsync({ address: vaultAddress, abi: vaultAbi, functionName: "stake", args: [parsedAmount, planId], chainId: sepolia.id });
       setAmount("");
@@ -149,6 +162,7 @@ export function VaultPanel({ onBalanceChange }: { onBalanceChange: () => void })
 
   async function withdrawPrincipal() {
     if (!vaultAddress || !isUnlocked || wrongNetwork) return;
+    setActiveAction("withdraw");
     try {
       await withdrawWrite.writeContractAsync({ address: vaultAddress, abi: vaultAbi, functionName: "withdrawPrincipal", chainId: sepolia.id });
     } catch {}
@@ -156,12 +170,21 @@ export function VaultPanel({ onBalanceChange }: { onBalanceChange: () => void })
 
   async function claimReward() {
     if (!vaultAddress || !claimableReward || wrongNetwork) return;
+    setActiveAction("reward");
     try {
       await rewardWrite.writeContractAsync({ address: vaultAddress, abi: vaultAbi, functionName: "claimReward", chainId: sepolia.id });
     } catch {}
   }
 
-  const error = approveWrite.error ?? stakeWrite.error ?? withdrawWrite.error ?? rewardWrite.error;
+  const activeTransaction = activeAction === "approve"
+    ? { write: approveWrite, receipt: approveReceipt }
+    : activeAction === "stake"
+      ? { write: stakeWrite, receipt: stakeReceipt }
+      : activeAction === "withdraw"
+        ? { write: withdrawWrite, receipt: withdrawReceipt }
+        : activeAction === "reward"
+          ? { write: rewardWrite, receipt: rewardReceipt }
+          : undefined;
 
   return (
     <section className="vault-panel" aria-labelledby="vault-title">
@@ -221,9 +244,15 @@ export function VaultPanel({ onBalanceChange }: { onBalanceChange: () => void })
         </div>
       </div>
 
-      {error && <p className="error-text vault-message">{error.message}</p>}
-      {(approveReceipt.isSuccess || stakeReceipt.isSuccess || withdrawReceipt.isSuccess || rewardReceipt.isSuccess) && (
-        <p className="success-text vault-message">{rewardReceipt.isSuccess ? "Reward claimed." : withdrawReceipt.isSuccess ? "Principal withdrawn; reward is now claimable." : stakeReceipt.isSuccess ? "Position opened and reward reserved." : "Allowance confirmed. Continue with Stake."}</p>
+      {activeAction && activeTransaction && (
+        <TransactionStatus
+          error={activeTransaction.write.error ?? activeTransaction.receipt.error}
+          hash={activeTransaction.write.data}
+          isConfirming={activeTransaction.receipt.isLoading}
+          isSuccess={activeTransaction.receipt.isSuccess}
+          isWaitingForWallet={activeTransaction.write.isPending}
+          successMessage={successMessages[activeAction]}
+        />
       )}
     </section>
   );
