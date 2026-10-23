@@ -55,6 +55,17 @@ A wallet signature authorizes a transaction but does not prove that it succeeded
 
 The contract ABIs include custom error definitions as well as functions and events. Those error entries do not change the deployed contracts; they give the client enough type information to decode revert data returned by the EVM.
 
+### Frontend tests
+
+Vitest and React Testing Library cover deterministic transaction behavior without connecting a wallet or sending a transaction:
+
+```bash
+pnpm --dir web test
+pnpm --dir web test:watch
+```
+
+The pure-function tests lock down error translation and explorer URLs. The component tests verify the idle, wallet, confirming, success, and failure presentations through the same accessible status region used by the DApp. CI runs the suite before linting and the production build, so a failed assertion blocks the pull request.
+
 ## Event indexer
 
 The optional local indexer converts confirmed blockchain logs into queryable application data:
