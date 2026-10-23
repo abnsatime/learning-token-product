@@ -75,6 +75,12 @@ pnpm --dir web test:e2e
 
 The E2E suite starts a local Next.js server, opens Chromium, follows the console anchor, checks disconnected-wallet validation, verifies the public source link, and detects horizontal overflow at a mobile viewport. It deliberately does not automate wallet signing or store a test private key. The production build remains a separate CI step because GitHub Pages uses a static export.
 
+## Personal activity timeline
+
+The static `/me` route builds a wallet-scoped timeline directly from Sepolia logs. It combines ERC-20 transfers with Faucet and Time Vault business events, removes duplicate transfer entries emitted by the same business transaction, reads timestamps from the corresponding blocks, and displays the latest 50 actions in reverse chronological order.
+
+No profile record, login database, or analytics identity is created. The connected address is used only as an indexed event filter in the browser. A public RPC can rate limit large histories; the deferred hosted indexer remains the production-oriented upgrade path for pagination, search, and high-volume accounts.
+
 ## Event indexer
 
 The optional local indexer converts confirmed blockchain logs into queryable application data:
